@@ -232,45 +232,46 @@ var PRE_LOW=[["Sprint","5 × 30 m","Dopo il tuo riscaldamento, con 2-3 allunghi 
 var POST_LOW=[["Flessori dell'anca in affondo","2 × 45 s per lato","Gluteo contratto, bacino in retroversione.",1],
   ["Stretching quadricipite a muro","2 × 45 s per lato","Ginocchio a terra, piede contro il muro, busto dritto.",1],
   ["Posizione del bambino","1 × 60 s","Respira nella schiena, rilassa la zona lombare.",1]];
-function X(id,name,sets,lo,hi,rir,rest,step,cue,fail,bw){return {id:id,name:name,sets:sets,lo:lo,hi:hi,rir:rir,rest:rest,step:step,cue:cue,fail:!!fail,bw:!!bw}}
-var CHIN=["chin","Chin tucks al muro",3,15,30,0,60,0,"In piedi con talloni, glutei, scapole e nuca al muro. Mento indietro, spingi la nuca contro il muro e tieni 2 s a ogni rep. Cedimento = quando perdi la posizione del mento.",1,1];
+function E(id,name,sets,lo,hi,rir,rest,step,ss,cue,o){o=o||{};return {id:id,name:name,sets:sets,lo:lo,hi:hi,rir:rir,rest:rest,step:step,ss:ss||"",cue:cue,fail:rir===0,bw:!!o.bw,run:!!o.run}}
+function SPRINT(id){return E(id,"Sprint 30 m",5,30,30,0,120,0,"","Dopo il tuo riscaldamento fai 2-3 allunghi progressivi. Corri al massimo, cammina indietro e riparti allo scadere del recupero.",{run:1})}
+function NECK(){return E("neckc","Neck curl su panca",3,15,20,0,30,1.25,"D","Supino, disco sulla fronte, movimento lento e controllato fino a cedimento.")}
+function CHIN(){return E("chin","Chin tucks al muro",3,15,30,0,45,0,"D","In piedi con talloni, glutei, scapole e nuca al muro. Mento indietro, nuca contro il muro, 2 s di tenuta a ogni rep. Cedimento = quando perdi la posizione.",{bw:1})}
 var P={
- UA:{name:"Upper A",day:0,focus:"Petto alto, larghezza schiena, spalle",pre:PRE_UP,post:POST_UP,ex:[
-  X("panca","Panca inclinata 30° manubri",3,6,10,2,150,2.5,"Scapole strette e basse per tutta la serie."),
-  X("traz","Trazioni o lat machine presa media",3,6,10,2,150,2.5,"Parti da allungo completo, petto verso la sbarra, niente slancio."),
-  X("rema","Rematore con petto in appoggio",3,8,12,2,120,2.5,"Pausa di 1 s in chiusura stringendo le scapole."),
-  X("latcavo","Alzate laterali al cavo",4,12,20,1,75,1.25,"Cavo dietro al corpo, guida il movimento col gomito."),
-  X("face","Face pull alla corda",2,15,20,1,60,2.5,"Per la postura. Gomiti alti, chiudi ruotando le mani all'indietro."),
-  X("curlinc","Curl su panca inclinata",3,8,12,1,90,1,"Gomiti fermi dietro al busto, allungo completo in basso."),
-  X("trioh","Estensioni tricipiti sopra la testa al cavo",3,10,15,1,90,2.5,"Costole basse, non inarcare la schiena."),
-  X("neckc","Neck curl su panca",3,15,20,0,75,1.25,"Disco sulla fronte, lento e controllato fino a cedimento.",1),
-  X.apply(null,CHIN)]},
- LA:{name:"Lower A",day:1,focus:"Quadricipiti, sprint prima dei pesi",pre:PRE_LOW,post:POST_LOW,ex:[
-  X("hack","Hack squat o squat",3,6,10,2,180,5,"Costole basse e addome compatto, non inarcare la schiena in risalita."),
-  X("rdl","Stacco rumeno",3,8,10,2,150,5,"Bacino indietro, schiena neutra, fermati quando i femorali tirano."),
-  X("legext","Leg extension",2,10,15,1,90,2.5,"Pausa di 1 s in alto."),
-  X("calfp","Calf in piedi",3,8,12,1,90,5,"Pausa di 2 s in allungo, niente rimbalzo."),
-  X("crunchc","Crunch al cavo",3,10,15,1,75,2.5,"Arrotola la colonna, non tirare con le anche."),
-  X("necke","Neck extension",2,15,20,2,60,1.25,"Prono su panca, disco dietro la testa, lento.")]},
- UB:{name:"Upper B",day:3,focus:"Schiena alta, deltoidi, braccia",pre:PRE_UP,post:POST_UP,ex:[
-  X("latn","Lat machine presa neutra",3,8,12,2,120,2.5,"Allungo completo in alto, gomiti verso i fianchi."),
-  X("ohp","Shoulder press manubri da seduto",3,6,10,2,150,2.5,"Schiena contro lo schienale, costole basse, niente arco lombare."),
-  X("pulley","Pulley presa larga a gomiti alti",3,10,12,2,120,2.5,"Tira verso lo sterno. Lavoro principale per la parte alta della schiena."),
-  X("croci","Croci ai cavi dal basso verso l'alto",3,10,15,1,90,1.25,"Mani che salgono fino al mento, petto in fuori."),
-  X("latman","Alzate laterali manubri",3,12,20,1,75,1,"Leggera inclinazione in avanti, niente slancio."),
-  X("revpec","Reverse pec deck",3,12,20,1,60,2.5,"Braccia quasi tese, apri senza stringere le scapole."),
-  X("hammer","Hammer curl",2,10,15,1,0,1,"In superserie: passa subito al pushdown."),
-  X("push","Pushdown alla corda",2,10,15,1,60,2.5,"Gomiti fermi ai fianchi, apri la corda in basso."),
-  X("neckc","Neck curl su panca",3,15,20,0,75,1.25,"Disco sulla fronte, lento e controllato fino a cedimento.",1),
-  X.apply(null,CHIN)]},
- LB:{name:"Lower B",day:4,focus:"Glutei e femorali, sprint prima dei pesi",pre:PRE_LOW,post:POST_LOW,ex:[
-  X("press","Leg press o bulgarian split squat",3,8,12,2,150,5,"Bacino incollato allo schienale, non staccare i glutei in basso."),
-  X("legcurl","Leg curl seduto",3,8,12,1,90,2.5,"Busto inclinato in avanti, discesa controllata."),
-  X("hip","Hip thrust",3,8,12,2,120,5,"Chiave per il bacino. Mento basso, chiudi in retroversione, 1 s di pausa."),
-  X("calfs","Calf seduto o alla pressa",3,10,15,1,90,5,"Pausa di 2 s in allungo."),
-  X("revcr","Reverse crunch su panca",3,10,15,1,75,1.25,"Stacca il bacino dalla panca arrotolandolo verso il petto."),
-  X("shrug","Scrollate con manubri",2,10,15,1,60,2.5,"Pausa di 1 s in alto, niente rotazioni."),
-  X("necke","Neck extension",2,15,20,2,60,1.25,"Prono su panca, disco dietro la testa, lento.")]}
+ UA:{name:"Upper A",day:0,focus:"Petto alto, larghezza della schiena, deltoidi laterali, braccia",pre:[],post:[],ex:[
+  E("inc","Panca inclinata 30° manubri",3,6,10,1,75,2,"A","Prima 1-2 serie di avvicinamento leggere. Scapole basse e strette, scendi fino all'allungo del petto."),
+  E("latn","Lat machine presa neutra",3,6,10,1,75,2.5,"A","Senza cinghie: la presa allena anche l'avambraccio. Allungo completo in alto, gomiti verso i fianchi."),
+  E("rowdb","Rematore con manubrio su panca",3,8,12,1,60,2,"B","Senza cinghie. Tira il gomito verso l'anca, 1 s di pausa in alto, discesa lenta fino all'allungo."),
+  E("latcav","Alzate laterali al cavo",3,10,15,0,60,1.25,"B","Cavo dietro al corpo, parti dal basso in allungo e guida col gomito."),
+  E("curlinc","Curl su panca inclinata",3,8,12,0,60,1,"C","Gomiti dietro al busto: il bicipite lavora in allungo, dove cresce di più. Niente slancio."),
+  E("trioh","Estensioni sopra la testa al cavo",3,8,12,0,60,2.5,"C","Gomiti alti e stretti, scendi bene dietro la testa: il capo lungo del tricipite è il più grande."),
+  E("crocib","Croci ai cavi dal basso",3,10,15,0,30,1.25,"D","Dal basso verso il mento: petto alto, il punto più scarico del tuo petto."),
+  NECK(),CHIN()]},
+ LA:{name:"Lower A",day:1,focus:"Quadricipiti e femorali, sprint, braccia",pre:[],post:[],ex:[
+  SPRINT("sprA"),
+  E("hack","Hack squat",3,6,10,1,150,5,"","Prima 1-2 serie di avvicinamento. Scendi profondo e controllato, costole basse."),
+  E("lcurl","Leg curl seduto",3,8,12,0,60,2.5,"A","Da seduto il femorale lavora più in allungo che da sdraiato e cresce di più. Busto in avanti."),
+  E("lext","Leg extension",3,10,15,0,60,2.5,"A","Schienale inclinato indietro se la macchina lo permette, 1 s di pausa in alto."),
+  E("curlez","Curl con bilanciere EZ",2,8,12,0,45,2.5,"B","Senza cinghie e senza slancio: carico alto per bicipite e avambraccio."),
+  E("frenchez","French press EZ su panca",2,8,12,0,45,2.5,"B","Porta il bilanciere dietro la testa, non sulla fronte: tricipite in allungo."),
+  E("calfp","Calf in piedi",3,8,12,0,45,5,"B","2 s di pausa in basso in allungo, niente rimbalzo.")]},
+ UB:{name:"Upper B",day:3,focus:"Spessore della schiena, spalle, braccia e avambracci",pre:[],post:[],ex:[
+  E("traz","Trazioni o lat machine presa larga",3,6,10,1,75,2.5,"A","Senza cinghie. Se a corpo libero superi le 10 reps, aggiungi zavorra."),
+  E("ohp","Shoulder press manubri da seduto",3,6,10,1,75,2,"A","Schiena contro lo schienale, costole basse, niente arco lombare."),
+  E("pulley","Pulley presa larga a gomiti alti",3,10,12,1,60,2.5,"B","Tira verso lo sterno con gomiti a 45-60°: parte alta della schiena e deltoide posteriore."),
+  E("latman","Alzate laterali manubri",3,12,20,0,60,1,"B","Leggera inclinazione in avanti, niente slancio, ultima serie fino a cedimento."),
+  E("hammer","Hammer curl manubri",3,8,12,0,60,1,"C","Presa neutra: lavora brachiale e brachioradiale, il muscolo che rende spesso l'avambraccio."),
+  E("push","Pushdown alla corda",3,10,15,0,60,2.5,"C","Gomiti fermi ai fianchi, apri la corda in basso."),
+  E("revpec","Reverse pec deck",2,12,20,0,30,2.5,"D","Braccia quasi tese, apri senza stringere le scapole: deltoide posteriore."),
+  NECK(),CHIN()]},
+ LB:{name:"Lower B",day:4,focus:"Catena posteriore, gambe, trapezi, addome, braccia",pre:[],post:[],ex:[
+  SPRINT("sprB"),
+  E("rdl","Stacco rumeno con bilanciere",3,6,10,1,150,5,"","Senza cinghie finché la presa regge: lavoro gratis per l'avambraccio. Schiena neutra, bacino indietro."),
+  E("press","Leg press",3,8,12,1,75,5,"A","Scendi profondo senza staccare il bacino dallo schienale."),
+  E("calfpr","Calf alla pressa",3,10,15,0,30,5,"A","Stessa macchina della leg press: niente spostamenti. 2 s di pausa in allungo."),
+  E("revcr","Reverse crunch su panca",2,10,15,0,45,0,"B","Stacca il bacino arrotolandolo verso il petto: allena l'addome che tiene dentro la pancia.",{bw:1}),
+  E("shrug","Scrollate con manubri",2,10,15,0,45,2,"B","Senza cinghie, 1 s di pausa in alto: trapezi e presa."),
+  E("curlalt","Curl manubri alternato",2,8,12,0,45,1,"C","Ruota il polso verso l'esterno salendo, scendi lento."),
+  E("trioh1","Estensioni sopra la testa con manubrio",2,8,12,0,45,2,"C","Un manubrio a due mani, gomiti stretti, scendi in allungo dietro la testa.")]}
 };
 var ORDER=["UA","LA","UB","LB"], DAY2S={0:"UA",1:"LA",3:"UB",4:"LB"};
 var DN=["Lun","Mar","Mer","Gio","Ven","Sab","Dom"];
@@ -302,7 +303,7 @@ try{var raw=localStorage.getItem(LS);if(raw)S=norm(JSON.parse(raw))}catch(e){}
 function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
 var pend=false;try{pend=localStorage.getItem(LS+"-p")==="1"}catch(e){}
 function setPend(v){pend=v;try{localStorage.setItem(LS+"-p",v?"1":"0")}catch(e){}}
-var RESET_ID="r2026-10-27";
+var RESET_ID="r2026-10-27b";
 try{if(localStorage.getItem(LS+"-reset")!==RESET_ID){var t0=today();S=blank();S.start=iso(monday(t0));S.from=iso(t0);localStorage.setItem(LS+"-reset",RESET_ID);saveLocal()}}catch(e){}
 
 var ref=null, sync="wait", saving=false, dirty=false, timer=0, firstSnap=false;
@@ -370,6 +371,7 @@ function weekDone(w){return ORDER.filter(function(s){return sessDone(w,s)}).leng
 function lastLog(w,s,id){for(var k=w-1;k>=1;k--){if(DELOAD[k])continue;var e=S.log[key(k,s)],l=e&&e.ex&&e.ex[id];if(l&&l.sets>0)return l}return null}
 function suggest(w,s,ex){
   var cur=entry(w,s).ex[ex.id]||{}, last=lastLog(w,s,ex.id), kg=0, reps=ex.lo, hint, up=false;
+  if(ex.run)return {kg:0,reps:0,hint:DELOAD[w]?"Settimana di scarico: sprint all'80%, stesse ripetute.":(w<=2?"Prime 2 settimane: al 90%, per abituare i femorali.":"Al massimo. Se senti tirare il femorale, fermati lì."),up:false};
   if(DELOAD[w]){ if(last){kg=last.kg||0;reps=last.reps||ex.lo} hint="Settimana di scarico: metà serie, stessi kg, lontano dal cedimento." }
   else if(ex.bw){ if(last){reps=(last.reps||ex.lo)+1; hint="Ultima volta "+last.reps+" reps a cedimento. Batti quel numero"+((last.reps||0)>=ex.hi?", oppure allunga la tenuta a 4 s.":".")} else hint="A cedimento, tutte e 3 le serie. Segna le reps dell'ultima." }
   else if(!last){ hint=ex.fail?"A cedimento. Scegli un peso con cui cedi tra "+ex.lo+" e "+ex.hi+" reps.":"Prima volta: scegli un peso da "+ex.lo+"-"+ex.hi+" reps tenendone "+ex.rir+" di margine." }
@@ -377,6 +379,11 @@ function suggest(w,s,ex){
   else { kg=last.kg||0; reps=Math.min(ex.hi,(last.reps||ex.lo)+1); hint="Ultima volta "+fmt(kg)+" kg × "+last.reps+". Stesso peso, "+(ex.fail?"a cedimento: batti le ":"punta a ")+reps+" reps." }
   return {kg:cur.kg!==undefined?cur.kg:kg, reps:cur.reps!==undefined?cur.reps:reps, hint:hint, up:up}
 }
+function group(s,x){return x.ss?P[s].ex.filter(function(y){return y.ss===x.ss}):[x]}
+function ssLabel(s,x){var g=group(s,x);return g.length>1?x.ss+(g.indexOf(x)+1):""}
+function nextAfter(w,s,x){var g=group(s,x),i=g.indexOf(x);
+  for(var k=1;k<=g.length;k++){var c=g[(i+k)%g.length];if(!exDone(w,s,c))return c}
+  return P[s].ex.filter(function(y){return !exDone(w,s,y)})[0]||null}
 function sessDate(w,s){return addDays(start(),7*(w-1)+P[s].day)}
 function counted(d){return diff(d,parse(S.from))>=0}
 function timeline(){var t=today(),out=[];for(var w=1;w<=WEEKS;w++)ORDER.forEach(function(s){var d=sessDate(w,s);if(diff(d,t)<=0&&counted(d))out.push({w:w,s:s,d:d,done:sessDone(w,s)})});return out}
@@ -441,20 +448,20 @@ function session(){
   var p=P[s],e=entry(vw,s),pct=sessPct(vw,s),done=sessDone(vw,s);
   if(openEx===null&&!openSet){var nx=p.ex.filter(function(x){return !exDone(vw,s,x)})[0];openEx=nx?nx.id:""}
   var o='<section class="card"><div class="sesshead"><div class="row"><h2>'+p.name+(done?' <span style="color:var(--done)">✓</span>':'')+'</h2><span class="num">'+sessCount(vw,s)+'<span style="color:var(--muted);font-size:16px"> / '+sessTotal(s)+'</span></span></div><span class="small muted">'+h(p.focus)+(DELOAD[vw]?". Scarico: metà serie, stessi kg.":"")+'</span><div class="bar accent"><u data-bar="sess'+vw+s+'" data-val="'+pct+'"></u></div>'+timerRow(vw,s)+'</div>';
-  if(p.pre.length)o+='<div class="sect">Sprint</div>'+items(p.pre,"pre",e);o+='<div class="sect">Forza</div>';
+  o+='<div class="sect">Esercizi</div>';
   p.ex.forEach(function(x){
     var l=e.ex[x.id]||{},t=tSets(vw,x),n=Math.min(l.sets||0,t),open=openEx===x.id,dots="";
     for(var i=0;i<t;i++)dots+='<i class="'+(i<n?"f":"")+'"></i>';
-    o+='<div class="ex"><button class="exhead" data-act="openex" data-id="'+x.id+'" aria-expanded="'+open+'"><span class="tick" style="'+(n>=t?"background:var(--done);border-color:var(--done);color:var(--on-accent)":"")+'">✓</span><span><b>'+h(x.name)+'</b><em>'+t+' × '+(x.fail?'cedimento':x.lo+'-'+x.hi+' · margine '+x.rir)+(l.sets?' · '+(l.kg?fmt(l.kg)+' kg × ':'corpo libero × ')+(l.reps||0):'')+'</em></span><span class="dots">'+dots+'</span></button>';
+    o+='<div class="ex"><button class="exhead" data-act="openex" data-id="'+x.id+'" aria-expanded="'+open+'"><span class="tick" style="'+(n>=t?"background:var(--done);border-color:var(--done);color:var(--on-accent)":"")+'">✓</span><span><b>'+h(x.name)+'</b><em>'+(ssLabel(s,x)?ssLabel(s,x)+' · ':'')+(x.run?t+' × 30 m · recupero 2 min':t+' × '+(x.bw?'cedimento':x.lo+'-'+x.hi+' · '+(x.fail?'cedimento':'margine '+x.rir)))+(l.sets&&!x.run?' · '+(l.kg?fmt(l.kg)+' kg × ':'corpo libero × ')+(l.reps||0):'')+'</em></span><span class="dots">'+dots+'</span></button>';
     if(open){var sg=suggest(vw,s,x);
-      o+='<div class="exbody"><span class="small muted">'+h(x.cue)+'</span><div class="hint'+(sg.up?" up":"")+'">'+h(sg.hint)+'</div><div class="steps"'+(x.bw?' style="grid-template-columns:1fr"':'')+'>'+
-        (x.bw?"":stepper("Kg","kg",x.id,sg.kg,x.step))+stepper("Reps ultima serie","reps",x.id,sg.reps,1)+'</div>';
-      if(n<t)o+='<button class="big" data-act="setdone" data-id="'+x.id+'">Serie '+(n+1)+' di '+t+' fatta</button>';
+      var g=group(s,x),mates=g.filter(function(y){return y!==x}).map(function(y){return y.name});
+      o+='<div class="exbody"><span class="small muted">'+h(x.cue)+'</span>'+(mates.length?'<span class="small"><b>Superserie</b> con '+h(mates.join(" e "))+': dopo ogni serie passi all\'altro esercizio, '+x.rest+' s di recupero.</span>':'')+'<div class="hint'+(sg.up?" up":"")+'">'+h(sg.hint)+'</div>';
+      if(!x.run)o+='<div class="steps"'+(x.bw?' style="grid-template-columns:1fr"':'')+'>'+(x.bw?"":stepper("Kg","kg",x.id,sg.kg,x.step))+stepper("Reps ultima serie","reps",x.id,sg.reps,1)+'</div>';
+      if(n<t)o+='<button class="big" data-act="setdone" data-id="'+x.id+'">'+(x.run?'Sprint ':'Serie ')+(n+1)+' di '+t+(x.run?' fatto':' fatta')+'</button>';
       else o+='<button class="big okk" data-act="openex" data-id="'+x.id+'">Esercizio chiuso</button>';
       if(n>0)o+='<button class="link" data-act="setundo" data-id="'+x.id+'">Annulla l\'ultima serie</button>';
       o+='</div>'}
     o+='</div>'});
-  o+='<div class="sect">Dopo</div>'+items(p.post,"post",e);
   o+='<div class="pad" style="border-top:1px solid var(--line);display:flex;flex-direction:column"><button class="link" data-act="manual">'+(e.manual?"Togli il segno di seduta fatta":"Segna tutta la seduta come fatta")+'</button></div></section>';
   return o}
 function stepper(label,f,id,val,step){var iid="in-"+f+"-"+id;return '<div class="step"><label for="'+iid+'">'+label+'</label><div><button data-act="bump" data-f="'+f+'" data-id="'+id+'" data-d="'+(-step)+'" aria-label="Meno">−</button><input id="'+iid+'" type="number" inputmode="decimal" step="any" min="0" value="'+val+'" data-in="'+f+'" data-id="'+id+'"><button data-act="bump" data-f="'+f+'" data-id="'+id+'" data-d="'+step+'" aria-label="Più">+</button></div></div>'}
@@ -507,7 +514,7 @@ function viewProgressi(){
   // carichi
   o+='<section class="card"><div class="cardhead"><h2>Carichi</h2><span class="small muted">dal via a oggi</span></div>';
   var any=false;
-  ORDER.forEach(function(s){var rows="";P[s].ex.forEach(function(x){var first=null,last=null;for(var w=1;w<=WEEKS;w++){var e=S.log[key(w,s)],l=e&&e.ex&&e.ex[x.id];if(l&&l.sets>0){if(!first)first=l;last=l}}
+  ORDER.forEach(function(s){var rows="";P[s].ex.forEach(function(x){if(x.run)return;var first=null,last=null;for(var w=1;w<=WEEKS;w++){var e=S.log[key(w,s)],l=e&&e.ex&&e.ex[x.id];if(l&&l.sets>0){if(!first)first=l;last=l}}
       if(first){any=true;var f=x.bw?"reps":"kg",u=x.bw?" reps":" kg",d=(last[f]||0)-(first[f]||0);rows+='<div class="lift"><span>'+h(x.name)+'</span><b>'+fmt(first[f]||0)+' → '+fmt(last[f]||0)+u+'</b><span class="d">'+(d>0?"+"+fmt(d):d<0?fmt(d):"=")+'</span></div>'}});
     if(rows)o+='<div class="sect">'+P[s].name+'</div>'+rows});
   if(!any)o+='<div class="pad muted" style="padding-top:0">Qui compare ogni esercizio con il peso di partenza e quello attuale. Si riempie da sola dopo la prima seduta.</div>';
@@ -517,11 +524,12 @@ function viewPiano(){
   var m=macros(),o='<div class="eyebrow">Piano</div><h1>Lean bulk <small>'+m.k.toLocaleString("it-IT")+' kcal</small></h1>';
   o+='<section class="card"><div class="macros"><div><b class="num">'+m.p+'</b><span>proteine g</span></div><div><b class="num">'+m.c+'</b><span>carbo g</span></div><div><b class="num">'+m.f+'</b><span>grassi g</span></div><div><b class="num">'+(S.adj>0?"+":"")+S.adj*150+'</b><span>kcal corrette</span></div></div><div class="pad" style="display:flex;flex-direction:column;gap:10px"><div class="rowbtn"><button class="big ghost" data-act="adj" data-d="-1">− 150 kcal</button><button class="big ghost" data-act="adj" data-d="1">+ 150 kcal</button></div><span class="small muted">Tocca solo se il peso esce dal ritmo per 3 settimane. La correzione va tutta sui carboidrati. Mantenimento stimato 3.050 kcal.</span></div></section>';
   o+='<section class="card"><div class="cardhead"><h2>Regole</h2></div>';
-  [["Intensità","Multiarticolari: fermati a 2 reps dal cedimento. Isolamenti: a 1. Cedimento solo nell'ultima serie di un isolamento. Eccezione: neck curl e chin tucks, 3 serie a cedimento."],
+  [["Intensità","Multiarticolari: ultima serie a 1 rep dal cedimento. Isolamenti, neck curl e chin tucks: ultima serie a cedimento, le altre a 1 rep. Poche serie ma tutte vere."],
+   ["Superserie","A1 e A2 si alternano: mentre uno lavora l'altro recupera. Ogni muscolo riposa comunque 2-3 minuti, ma la seduta resta sotto l'ora."],
    ["Quando salire di peso","Quando l'ultima serie arriva al massimo del range. L'app te lo dice da sola alla seduta dopo."],
    ["Stallo","3 sedute senza progressi dormendo e mangiando bene: cambia solo quell'esercizio con una variante simile."],
-   ["Scarico","Settimane 7 e 11: metà serie, stessi kg, sprint all'80%. Anticipalo se cali per 2 sedute di fila, dormi peggio o hai il battito a riposo più alto."],
-   ["Sprint","10 minuti di riscaldamento con allunghi. Recupero 2-3 minuti. Prime 2 settimane al 90%."]].forEach(function(r){o+='<div class="rule"><b>'+r[0]+'</b><span class="small muted">'+r[1]+'</span></div>'});
+   ["Scarico","Settimane 7 e 11: metà serie, stessi kg, lontano dal cedimento. Anticipalo se cali per 2 sedute di fila, dormi peggio o hai il battito a riposo più alto."],
+   ["Avambracci","Niente lavoro diretto: crescono con trazioni, rematori, stacchi e scrollate senza cinghie, più hammer curl e curl EZ."]].forEach(function(r){o+='<div class="rule"><b>'+r[0]+'</b><span class="small muted">'+r[1]+'</span></div>'});
   o+='</section><section class="card"><div class="cardhead"><h2>Postura</h2></div><div class="rule"><span class="small muted">La pancia sporge soprattutto perché il bacino è ruotato in avanti. Rientra con bacino neutro, addome profondo più forte e grasso sotto controllo. Primi risultati in 6-8 settimane.</span></div>';
   [["Stomach vacuum, 4 × 20 s","Al mattino a stomaco vuoto. Espira tutta l'aria e tira l'ombelico verso la colonna. Aggiungi 5 s a settimana fino a 40 s."],
    ["Chin tucks, 2 × 10","In piedi appoggiato al muro. Mento indietro come per fare il doppio mento, nuca lunga contro il muro, tieni 5 s. Corregge la testa in avanti e pulisce la linea della mandibola."],
@@ -604,8 +612,8 @@ var ACT={
   bump:function(d){ if(d.f==="weight"||d.f==="waist"){var inp=document.getElementById("in-"+d.f+"-"+d.id),v=(num(inp.value)||0)+ +d.d;inp.value=Math.max(0,Math.round(v*10)/10);return}
     var l=logFor(d.id);l[d.f]=Math.max(0,Math.round(((l[d.f]||0)+ +d.d)*100)/100);commit()},
   setdone:function(d){wake();withDoneCheck(function(){var s=curS(),x=findEx(d.id),l=logFor(d.id),t=tSets(vw,x);if(l.sets<t)l.sets++;
-    if(l.sets>=t){var nx=P[s].ex.filter(function(y){return !exDone(vw,s,y)&&y.id!==x.id})[0];openSet=true;openEx=nx?nx.id:"";startRest(nx?x.rest:0,nx?nx.name:"")}
-    else startRest(x.rest,"Serie "+(l.sets+1)+" di "+t);commitW()})},
+    var nx=nextAfter(vw,s,x);openSet=true;openEx=nx?nx.id:"";
+    if(!nx)stopRest();else if(nx===x)startRest(x.rest,(x.run?"Sprint ":"Serie ")+(l.sets+1)+" di "+t);else startRest(x.rest,nx.name);commitW()})},
   setundo:function(d){var l=logFor(d.id);l.sets=Math.max(0,(l.sets||0)-1);stopRest();commit()},
   manual:function(){withDoneCheck(function(){var e=entry(vw,curS(),true);e.manual=e.manual?0:1;commitW()})},
   reststop:function(){stopRest()},
