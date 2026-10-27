@@ -224,16 +224,11 @@ details summary::-webkit-details-marker{display:none}
 "use strict";
 /* ---------- programma ---------- */
 var WEEKS=13, DELOAD={7:1,11:1};
-var PRE_UP=[["Estensioni toraciche su foam roller","1 × 10","Rullo sotto le scapole, apri il petto senza inarcare la zona lombare.",1],
-  ["Band pull-apart","2 × 15","Braccia tese, stringi le scapole, spalle lontane dalle orecchie.",1],
-  ["Dead bug","1 × 8 per lato","Zona lombare schiacciata a terra per tutto il movimento.",1]];
+var PRE_UP=[];
 var POST_UP=[["Stretching pettorale allo stipite","2 × 45 s per lato","Gomito a 90°, ruota il busto dal lato opposto.",1],
   ["Dead hang alla sbarra","2 × 30 s","Appeso rilassato, lascia allungare dorsali e colonna.",1],
   ["Flessori dell'anca in affondo","2 × 45 s per lato","Gluteo contratto, bacino in retroversione.",1]];
-var PRE_LOW=[["Glute bridge","1 × 15","Chiudi in retroversione del bacino, 2 s di pausa in alto.",1],
-  ["Dead bug","1 × 8 per lato","Zona lombare schiacciata a terra.",1],
-  ["Allunghi progressivi","3 × 30 m","Al 60, 70 e 80%. Preparano i femorali.",1],
-  ["Sprint","5 × 30 m","Recupero 2-3 min. Prime 2 settimane al 90%, poi al massimo.",5]];
+var PRE_LOW=[["Sprint","5 × 30 m","Dopo il tuo riscaldamento, con 2-3 allunghi progressivi. Recupero 2-3 min. Prime 2 settimane al 90%, poi al massimo.",5]];
 var POST_LOW=[["Flessori dell'anca in affondo","2 × 45 s per lato","Gluteo contratto, bacino in retroversione.",1],
   ["Stretching quadricipite a muro","2 × 45 s per lato","Ginocchio a terra, piede contro il muro, busto dritto.",1],
   ["Posizione del bambino","1 × 60 s","Respira nella schiena, rilassa la zona lombare.",1]];
@@ -307,6 +302,8 @@ try{var raw=localStorage.getItem(LS);if(raw)S=norm(JSON.parse(raw))}catch(e){}
 function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
 var pend=false;try{pend=localStorage.getItem(LS+"-p")==="1"}catch(e){}
 function setPend(v){pend=v;try{localStorage.setItem(LS+"-p",v?"1":"0")}catch(e){}}
+var RESET_ID="r2026-10-27";
+try{if(localStorage.getItem(LS+"-reset")!==RESET_ID){var t0=today();S=blank();S.start=iso(monday(t0));S.from=iso(t0);localStorage.setItem(LS+"-reset",RESET_ID);saveLocal()}}catch(e){}
 
 var ref=null, sync="wait", saving=false, dirty=false, timer=0, firstSnap=false;
 function queueSave(){ if(!ref){return} dirty=true; clearTimeout(timer); timer=setTimeout(flush,700) }
@@ -444,7 +441,7 @@ function session(){
   var p=P[s],e=entry(vw,s),pct=sessPct(vw,s),done=sessDone(vw,s);
   if(openEx===null&&!openSet){var nx=p.ex.filter(function(x){return !exDone(vw,s,x)})[0];openEx=nx?nx.id:""}
   var o='<section class="card"><div class="sesshead"><div class="row"><h2>'+p.name+(done?' <span style="color:var(--done)">✓</span>':'')+'</h2><span class="num">'+sessCount(vw,s)+'<span style="color:var(--muted);font-size:16px"> / '+sessTotal(s)+'</span></span></div><span class="small muted">'+h(p.focus)+(DELOAD[vw]?". Scarico: metà serie, stessi kg.":"")+'</span><div class="bar accent"><u data-bar="sess'+vw+s+'" data-val="'+pct+'"></u></div>'+timerRow(vw,s)+'</div>';
-  o+='<div class="sect">Prima</div>'+items(p.pre,"pre",e)+'<div class="sect">Forza</div>';
+  if(p.pre.length)o+='<div class="sect">Sprint</div>'+items(p.pre,"pre",e);o+='<div class="sect">Forza</div>';
   p.ex.forEach(function(x){
     var l=e.ex[x.id]||{},t=tSets(vw,x),n=Math.min(l.sets||0,t),open=openEx===x.id,dots="";
     for(var i=0;i<t;i++)dots+='<i class="'+(i<n?"f":"")+'"></i>';
