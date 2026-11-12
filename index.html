@@ -503,10 +503,8 @@ function timerRow(w,s){var e=S.log[key(w,s)],st=tState(e),est=mins5(estTotal(w,s
   if(st==="end")return '<div class="trow"><span class="small muted">Durata '+Math.max(1,Math.round((e.t1-e.t0)/60000))+' min · stima '+est+' min</span><button class="link" data-act="treset">Azzera</button></div>';
   if(st==="stale")return '<div class="trow"><span class="small muted">Timer rimasto aperto, durata non registrata.</span><button class="link" data-act="treset">Azzera</button></div>';
   return sessDone(w,s)?"":'<button class="big ghost" data-act="tstart">Inizia allenamento · stima '+est+' min</button>'}
-function waistWarn(){var w=closedWeek(),g=waistDue()!==null,p=weightDue()!==null;if(w===null||(!g&&!p))return "";
-  var lw=lastWeight(),what=g&&p?"peso e girovita":g?"il girovita":"il peso";
-  return '<section class="warn" role="alert"><h2>Misure di fine settimana</h2><span class="small">Settimana '+w+' chiusa: '+(g&&p?"mancano ":"manca solo ")+what+'. '+(p?"Peso al mattino a digiuno. ":"")+(g?"Metro all\'ombelico, pancia rilassata. ":"")+'Questo avviso resta finché non inserisci '+(g&&p?"entrambe le misure":"la misura")+'.</span><div class="steps"'+(g&&p?'':' style="grid-template-columns:1fr"')+'>'+
-    (p?stepper("Peso, kg","weight","b",lw!==null?lw:S.startWeight,.1):"")+(g?stepper("Girovita, cm","waist","b",waistLast(),.5):"")+'</div><button class="big" data-act="msave">Salva</button></section>'}
+function waistWarn(){var w=weightDue();if(w===null)return "";var lw=lastWeight();
+  return '<section class="warn" role="alert"><h2>Peso di fine settimana</h2><span class="small">Settimana '+w+' chiusa e manca il peso. Pesati al mattino a digiuno. Questo avviso resta finché non lo inserisci.</span><div class="steps" style="grid-template-columns:1fr">'+stepper("Peso, kg","weight","b",lw!==null?lw:S.startWeight,.1)+'</div><button class="big" data-act="msave">Salva</button></section>'}
 function viewOggi(){return workPill()+waistWarn()+header()+strip()+session()}
 
 function chart(){
@@ -538,9 +536,6 @@ function viewProgressi(){
   if(avg!==null&&lastW>=3){var pace=(avg-S.startWeight)/(lastW*7)*30.4, ps=(pace>=0?"+":"")+fmt(Math.round(pace*10)/10)+" kg al mese. ";
     msg=pace<.5?ps+"Sotto ritmo: aggiungi 150 kcal dalla scheda Piano.":pace>1?ps+"Troppo veloce: togli 150 kcal dalla scheda Piano.":ps+"Ritmo giusto, non toccare niente."}
   o+='<span class="small muted">'+msg+'</span></div></section>';
-  // girovita
-  var wk=waistWeek(),wv=S.waist[wk],wdue=waistDue()!==null;
-  o+='<section class="card"><div class="cardhead"><h2>Girovita</h2><span class="small muted">settimana '+wk+'</span></div><div class="pad" style="padding-top:0;display:flex;flex-direction:column;gap:10px"><div class="field">'+stepper("Cm all'ombelico, rilassato","waist","g",wv!==undefined?wv:waistLast(),.5)+'<button class="big'+(wv!==undefined?" okk":"")+'" data-act="gsave" data-id="g">'+(wv!==undefined?"Salvato":"Salva")+'</button></div>'+(wdue?'<span class="small" style="color:var(--larch);font-weight:600">Manca la misura della settimana '+wk+'.</span>':'')+'<span class="small muted">Una volta a settimana, a fine settimana. Se sale di oltre 2 cm dal via, togli 150 kcal.</span></div></section>';
   // carichi
   o+='<section class="card"><div class="cardhead"><h2>Carichi</h2><span class="small muted">dal via a oggi</span></div>';
   var any=false;
@@ -665,12 +660,10 @@ var ACT={
   startnow:function(){S.start=iso(monday(today()));S.from=iso(today());goToday();commit()},
   wsave:function(){var v=num(document.getElementById("in-weight-w").value);if(v===null||v<30||v>250){toast("Inserisci un peso valido in kg.");return}S.weights[iso(today())]=Math.round(v*10)/10;commit()},
   msave:function(){var w=closedWeek();if(w===null)return;
-    var gi=document.getElementById("in-waist-b"),pi=document.getElementById("in-weight-b"),g=gi?num(gi.value):null,p=pi?num(pi.value):null;
+    var pi=document.getElementById("in-weight-b"),p=pi?num(pi.value):null;
     if(pi&&(p===null||p<30||p>250)){toast("Inserisci un peso valido in kg.");return}
-    if(gi&&(g===null||g<40||g>200)){toast("Inserisci un girovita valido in cm.");return}
     if(pi){var t=today(),last=addDays(start(),7*w-1);S.weights[iso(diff(t,last)<=0?t:last)]=Math.round(p*10)/10}
-    if(gi)S.waist[w]=Math.round(g*10)/10;
-    commit();toast("Misure della settimana "+w+" salvate.")},
+    commit();toast("Peso della settimana "+w+" salvato.")},
   gsave:function(d){var v=num(document.getElementById("in-waist-"+d.id).value);if(v===null||v<40||v>200){toast("Inserisci una misura valida in cm.");return}var w=waistWeek();S.waist[w]=Math.round(v*10)/10;commit();toast("Girovita settimana "+w+" salvato.")},
   adj:function(d){S.adj=Math.max(-4,Math.min(6,S.adj+ +d.d));commit()}
 };
