@@ -318,7 +318,7 @@ function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
 var pend=false;try{pend=localStorage.getItem(LS+"-p")==="1"}catch(e){}
 function setPend(v){pend=v;try{localStorage.setItem(LS+"-p",v?"1":"0")}catch(e){}}
 var RESET_ID="r2026-11-12";
-try{if(localStorage.getItem(LS+"-reset")!==RESET_ID){var t0=today();S=blank();S.start=iso(monday(t0));S.from=iso(t0);localStorage.setItem(LS+"-reset",RESET_ID);saveLocal()}}catch(e){}
+try{if(localStorage.getItem(LS+"-reset")!==RESET_ID){var t0=today();S=blank();S.start=iso(monday(t0));S.from=iso(t0);S.resetId=RESET_ID;localStorage.setItem(LS+"-reset",RESET_ID);saveLocal()}}catch(e){}
 
 var ref=null, sync="wait", saving=false, dirty=false, timer=0, firstSnap=false;
 function queueSave(){ if(!ref){return} dirty=true; clearTimeout(timer); timer=setTimeout(flush,700) }
@@ -340,6 +340,7 @@ function boot(){
         var d=snap.exists?snap.data():null, was=firstSnap; firstSnap=true;
         if(!d){ if(pend&&S.updatedAt)queueSave(); else setSync("ok"); return }
         var r=norm(JSON.parse(JSON.stringify(d)));
+        if(S.resetId===RESET_ID&&r.resetId!==RESET_ID){queueSave();return}
         if(!was && pend && S.updatedAt && r.updatedAt!==S.updatedAt){
           S=r.updatedAt>S.updatedAt?merge(S,r):merge(r,S); S.updatedAt=Date.now(); saveLocal(); render(); queueSave(); return }
         if(r.updatedAt>S.updatedAt){var os=S.start;S=r;saveLocal();if(S.start!==os)goToday();render()}
